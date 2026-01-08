@@ -1,29 +1,3 @@
-Installation:
-I have install Laravel latest version that is 12.
-
-Implemented Admin and Customer Login by using custom guards of laravel
-Created separate Login, Register and dashboards for both the roles
-
-For Admin you can access it using url : http://127.0.0.1:8000/admin/login
-For Customer you can go with url :http://127.0.0.1:8000/customer/dashboard
-
-I have also added routes restrictions that if admin/customer authenticate and authorize to access that url only then it will opens up
-
-For Import: 
-
-I have added product table and migration and done CRUD operations which is accessible by admin only and for bulk import i have Install maatwebsite for import feature
-I have first export csv file by inserting dummy data using factory and seeder and then created import class using command  php artisan make:import ProductImport Added code to run import in background since data is very heavy 100K so it is not suitable to import all at once as it crash or show timeout error therefore i have added queue for this and on import there is command running on background that is php artisan queue:work
-
-For test cases  
-I have created one unit test class and one feature test class and use (php artisan test --filter=ProductCreationUnitTest) in order to test specific class.
-
-For Real time online/offline point :
-Since I have used the latest laravel version so websocket works with laravel reverb therefor i installed 
-composer require laravel/reverb
-and created providers and listeners classed also set echo.js and add admin-dashboard.js file for showing real time online/offline
-I have added broadcastserviceprovider to define channel in this and added code on admin dashboard
-
-
 Overview
 
 This project is built using Laravel 12 and demonstrates a role-based product management system with Admin and Customer authentication, bulk product import, background processing using queues, unit/feature testing, and real-time online/offline status using WebSockets.
