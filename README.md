@@ -1,59 +1,113 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Installation:
+I have install Laravel latest version that is 12.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Implemented Admin and Customer Login by using custom guards of laravel
+Created separate Login, Register and dashboards for both the roles
 
-## About Laravel
+For Admin you can access it using url : http://127.0.0.1:8000/admin/login
+For Customer you can go with url :http://127.0.0.1:8000/customer/dashboard
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+I have also added routes restrictions that if admin/customer authenticate and authorize to access that url only then it will opens up
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+For Import: 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+I have added product table and migration and done CRUD operations which is accessible by admin only and for bulk import i have Install maatwebsite for import feature
+I have first export csv file by inserting dummy data using factory and seeder and then created import class using command  php artisan make:import ProductImport Added code to run import in background since data is very heavy 100K so it is not suitable to import all at once as it crash or show timeout error therefore i have added queue for this and on import there is command running on background that is php artisan queue:work
 
-## Learning Laravel
+For test cases  
+I have created one unit test class and one feature test class and use (php artisan test --filter=ProductCreationUnitTest) in order to test specific class.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+For Real time online/offline point :
+Since I have used the latest laravel version so websocket works with laravel reverb therefor i installed 
+composer require laravel/reverb
+and created providers and listeners classed also set echo.js and add admin-dashboard.js file for showing real time online/offline
+I have added broadcastserviceprovider to define channel in this and added code on admin dashboard
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+Overview
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+This project is built using Laravel 12 and demonstrates a role-based product management system with Admin and Customer authentication, bulk product import, background processing using queues, unit/feature testing, and real-time online/offline status using WebSockets.
 
-### Premium Partners
+Installation and Setup -
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. Clone the repository: 
+git clone https://github.com/maryamassmnt12/product-assessment.git
 
-## Contributing
+2. Install dependencies: 
+composer install
+npm install && npm run dev
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Create environment file
+4. Configure database credentials in .env
+5. Run migrations
+6. Start the application
 
-## Code of Conduct
+Authentication & Authorization -
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Implemented custom authentication guards for Admin and Customer
+2. Separate login, registration, and dashboard flows for each role
+3.Route access is protected using Laravel’s built-in guard middleware for Admin and Customer users.
 
-## Security Vulnerabilities
+Access URLs -
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Admin Login:
+http://127.0.0.1:8000/admin/login
 
-## License
+Customer Dashboard:
+http://127.0.0.1:8000/customer/login
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Only authenticated users with the correct role can access their respective routes.
+
+Product Management (Admin Only) - 
+
+1. Created products table with migration
+2. Implemented full CRUD operations
+3. Access restricted to Admin users only
+
+Bulk Product Import -
+
+1. Integrated Maatwebsite Excel package for CSV import
+2. Exported a sample CSV file using factories and seeders
+3. Implemented import logic using:
+    php artisan make:import ProductImport
+
+Background Processing -
+
+1. Bulk import is handled using Laravel Queues
+2. Designed for large datasets (100K+ records) to avoid timeout issues
+3. Queue worker must be running:
+    php artisan queue:work
+
+Testing - 
+
+1. Unit Test for product creation logic
+2. Feature Test for product creation flow 
+3. Tests use Laravel’s built-in testing suite
+    php artisan test --filter="ProductCreationUnitTest"
+
+Real-Time Online/Offline Status -
+
+1. Implemented real-time user presence using Laravel Reverb (WebSockets)
+2. Installed Reverb:  composer require laravel/reverb
+Key Implementations:
+-> Broadcast service provider and channels
+-> Event listeners for presence tracking
+-> Configured echo.js
+-> Custom admin-dashboard.js for real-time UI updates
+-> Displays live online/offline status on Admin dashboard
+
+Technologies Used =
+
+1. Laravel 12
+2. PHP 8+
+3. MySQL / SQLite (for testing)
+4. Laravel Queues
+5. Maatwebsite Excel
+6. Laravel Reverb (WebSockets)
+
+Notes -
+
+1. .env, vendor, and node_modules are excluded from the repository
+2. All necessary setup steps are documented above
+
+
